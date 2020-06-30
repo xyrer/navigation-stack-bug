@@ -27,7 +27,7 @@ struct ContentView: View {
 					Image(systemName: "xmark")
 				}
 			}
-		}
+		}.envNavigationContext()
     }
 }
 
@@ -42,33 +42,13 @@ struct loginView:View {
 	@EnvironmentObject var user:ObservableUser
 	
 	var body: some View {
-		HZStack(name: "login") {
+		VStack {
 			Text("login view")
 		}
-		.onAppear() {
+		.onNavigationComplete() {
+			print("login view")
 			self.user.loginAttempts = 0
 		}
-	}
-}
-
-struct HZStack<Content:View>:View {
-	let name:String
-	let content:()->Content
-	
-	var body: some View {
-		ZStack(alignment: .topLeading) {
-			self.content()
-		}
-		.edgesIgnoringSafeArea(.all)
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-		.navigationBarTitle("")
-		.navigationBarHidden(true)
-		.padding()
-	}
-	
-	init(name:String,darkStatusBar:Bool?=true,@ViewBuilder content:@escaping ()-> Content) {
-		self.name = name
-		self.content = content
 	}
 }
 
